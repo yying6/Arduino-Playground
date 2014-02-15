@@ -1,0 +1,80 @@
+/*
+
+Change color of RGB LED based on rangefinder distance.
+
+created 2014 Feb 15
+by Ying Ying Liu
+https://github.com/yying6/Arduino-Playground
+
+*/
+
+int trigPin = 13;
+int echoPin = 12;
+
+int redPin = 10;
+int greenPin = 9;
+int bluePin = 8;
+
+void setup(){
+  Serial.begin(9600);
+  pinMode(trigPin,OUTPUT);
+  pinMode(echoPin,INPUT);
+  
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+}
+
+void loop(){
+ int time,distance;
+ digitalWrite(trigPin, HIGH); // start transmition of ultrasonic pulse
+ delayMicroseconds(10); // for 10 microsecs (shortest readable pulse)
+  digitalWrite(trigPin, LOW); // turn ultrasonic pulse off
+  time=pulseIn(echoPin,HIGH); // logs time it takes for echoPin to 
+  // receive the 5v (so it's the time)
+  distance=0.0340*(time/2); //time * speed of sound because speed = d/t
+  
+  
+  if (distance >= 200 || distance <=0){
+    Serial.println("Out of range!!");
+  }
+  
+  if (distance > 0 && distance <=5){
+    Serial.println("Red distance!"); // turn red between 0-5
+    setColor(255, 0, 0);  // red
+  }
+  
+  if (distance > 5 && distance <=10){
+    Serial.println("Green distance!"); // turn green between 6-10
+    setColor(0, 255, 0);  // green
+  }
+  
+  if (distance > 10 && distance <=15){
+    Serial.println("Blue distance!"); // turn blue between 11-15
+    setColor(0, 0, 255);  // blue
+  }
+  
+  if (distance > 15 && distance <=20){
+    Serial.println("Purple distance!"); // turn purple between 16-20
+    setColor(107, 17, 175);  // purple
+  }
+  
+  if (distance > 20 ){
+    Serial.println("Aqua distance!"); // turn aqua greater than 20
+    setColor(0, 255, 255);  // aqua
+  }
+  
+  else {
+    Serial.print(distance);
+    Serial.println("cm");
+  }
+  
+  delay(500);
+}
+
+void setColor(int red, int green, int blue)
+{
+  analogWrite(redPin, 255-red); // 255- because using common Anode
+  analogWrite(greenPin, 255-green);
+  analogWrite(bluePin, 255-blue);  
+}
