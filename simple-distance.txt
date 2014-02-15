@@ -1,0 +1,39 @@
+/* Simple distance sensor code for Arduino 
+HC-SR04 has an ultrasonic transmitter and receiver
+5v signal applied to Trig pin produces ultrasonic sound wave
+when sound wave encounters an object, it is reflected back, 
+picked up by the receiver, converted to a 5v signal, then read
+by the Echo pin. Mechanism is used to measure distance.
+
+Code & Wiring inspired by http://www.instructables.com/id/Simple-Arduino-and-HC-SR04-Example/step3/Upload-the-sketch
+*/
+
+int trigPin = 11;
+int echoPin = 10;
+
+void setup(){
+  Serial.begin(9600);
+  pinMode(trigPin,OUTPUT);
+  pinMode(echoPin,INPUT);
+}
+
+void loop(){
+ int time,distance;
+ digitalWrite(trigPin, HIGH); // start transmition of ultrasonic pulse
+ delayMicroseconds(10); // for 10 microsecs (shortest pulse readable)
+  digitalWrite(trigPin, LOW); // turn ultrasonic pulse off
+  time=pulseIn(echoPin,HIGH); // logs time it takes for echoPin to 
+  // receive the 5v (so it's the time)
+  distance=0.0340*(time/2); //time * speed of sound (speed = d/t)
+  
+  if (distance >= 200 || distance <=0){
+    Serial.println("Out of range!!");
+  }
+  
+  else {
+    Serial.print(distance);
+    Serial.println("cm");
+  }
+  
+  delay(500);
+}
