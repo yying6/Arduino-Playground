@@ -1,0 +1,58 @@
+/* Control color modes of an RGB LED by adjusting a 10 kilohm potentiometer
+
+created 2014 Feb 10
+by Somesh Rahul & Ying Ying Liu
+
+This example code is in the public domain:
+*/
+
+const int analogInPin = A0;
+int redPin = 10;
+int greenPin = 9;
+int bluePin = 8;
+
+
+int sensorValue = 0;
+int outputValue = 0;
+
+void setup(){
+  Serial.begin(9600);
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+}
+
+void loop(){
+  sensorValue = analogRead(analogInPin);
+  outputValue = map(sensorValue, 0, 1023, 0, 2); // value, from low, from high
+  // to low, to high
+  
+  switch (outputValue) {
+    case 0: 
+      analogWrite(redPin, 255);
+      analogWrite(greenPin, 0);
+      analogWrite(bluePin, 0);
+      break; 
+      
+    case 1: 
+      analogWrite(redPin, 0);
+      analogWrite(greenPin, 255);
+      analogWrite(bluePin, 0);
+      break; 
+    
+    case 2: 
+      analogWrite(redPin, 0);
+      analogWrite(greenPin, 0);
+      analogWrite(bluePin, 255);
+      break; 
+  }
+ 
+  
+  Serial.print("sensor = ");
+  Serial.print(sensorValue);
+  Serial.print("\n");
+  Serial.print("output = ");
+  Serial.print(outputValue);
+  //delay(100);
+  
+}
