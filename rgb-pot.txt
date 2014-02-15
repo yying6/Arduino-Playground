@@ -1,4 +1,5 @@
-/* Control color modes of an RGB LED by adjusting a 10 kilohm potentiometer
+/* Control color modes of an RGB LED by 
+adjusting a 10 kilohm potentiometer
 
 created 2014 Feb 10
 by Somesh Rahul & Ying Ying Liu
