@@ -1,0 +1,49 @@
+/* 
+
+Turn an LED on/off based on rangefinder distance.
+
+Code and wiring inspired by 
+http://www.instructables.com/id/Simple-Arduino-and-HC-SR04-Example
+
+created 2014 Feb 15
+by Ying Ying Liu
+
+*/
+
+int trigPin = 11;
+int echoPin = 10;
+int led = 13; // pin that the LED is plugged into
+
+void setup(){
+  Serial.begin(9600);
+  pinMode(trigPin,OUTPUT);
+  pinMode(echoPin,INPUT);
+  pinMode(led,OUTPUT);
+}
+
+void loop(){
+ int time,distance;
+ digitalWrite(trigPin, HIGH); // start transmition of ultrasonic pulse
+ delayMicroseconds(10); // for 10 microsecs (shortest readable pulse)
+  digitalWrite(trigPin, LOW); // turn ultrasonic pulse off
+  time=pulseIn(echoPin,HIGH); // logs time it takes for echoPin to 
+  // receive the 5v (so it's the time)
+  distance=0.0340*(time/2); //time * speed of sound because speed = d/t
+  
+  if (distance >= 200 || distance <=0){
+    Serial.println("Out of range!!");
+  }
+  
+  if (distance >= 10 && distance <=20){
+    Serial.println("LED distance!"); // turn LED on btw 10-20cm
+    digitalWrite(led,HIGH);
+  }
+  
+  else {
+    Serial.print(distance);
+    Serial.println("cm");
+    digitalWrite(led,LOW); // turn LED off
+  }
+  
+  delay(500);
+}
