@@ -3,7 +3,8 @@
 created 2014 Feb 10
 by Somesh Rahul & Ying Ying Liu
 
-This example code is in the public domain:
+This example code is in the public domain: 
+https://github.com/yying6/Arduino-Playground/blob/master/rgb-pot.txt
 */
 
 const int analogInPin = A0;
