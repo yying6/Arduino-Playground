@@ -1,0 +1,28 @@
+/* Servo Photocell 
+
+Control servo motor angle by LDR
+
+created 2014 Feb 20
+by Ying Ying Liu
+*/
+
+#include <Servo.h>
+
+Servo myservo; // create servo object to control a servo
+
+int photocellPin = 0; // analog pin connected to photocell
+int val; // variable to read value from analog pin
+
+void setup(){
+ Serial.begin(9600); // begin serial monitor
+ myservo.attach(9); // attaches servo pin on 9 to servo object 
+}
+
+void loop(){
+ Serial.println(val); // print value of angle 
+ val = analogRead(photocellPin);
+ val = map(val, 0, 30, 0, 179);
+ myservo.write(val);
+ delay(50); 
+ 
+}
