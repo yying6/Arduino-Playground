@@ -1,0 +1,111 @@
+/* FSR + LEDs for Room Occupancy Map
+ 
+Connect one end of FSR for room 1278 to 5V, the other end to Analog 0.
+Then connect one end of a 10K resistor from Analog 0 to ground
+Connect one end of FSR for room 1282 to 5V, the other end to Analog 1.
+Then connect one end of a 10K resistor from Analog 1 to ground
+Connect one anode RGB LED to 5v, then to Digital pins 4, 3, 2
+Connect another anode RGB LED to 5v, then to Digital pins 7, 6, 5
+
+Adapted from www.ladyada.net/learn/sensors/fsr.html
+2014 April 10
+by Ying Ying Liu
+
+ */
+ 
+// declaring things up for room 1278
+int fsrAnalogPin1278 = 0; // FSR for room 1278 is connected to analog 0
+int fsrReading1278;      // the analog reading from the FSR resistor divider
+// int LEDbrightness;
+int redPin1278 = 4;
+int greenPin1278 = 3;
+int bluePin1278 = 2;
+
+// declaring things up for room 1282
+int fsrAnalogPin1282 = 1; // FSR for room 1282 is connected to analog 1
+int fsrReading1282;      // the analog reading from the FSR resistor divider
+int redPin1282 = 7;
+int greenPin1282 = 6;
+int bluePin1282 = 5;
+
+// static blue LED
+int blueLED = 10;
+
+// static red LED
+int redLED = 9;
+ 
+void setup(void) {
+  Serial.begin(9600);   // We'll send debugging information via the Serial monitor
+  
+  pinMode(redPin1278, OUTPUT);
+  pinMode(greenPin1278, OUTPUT);
+  pinMode(bluePin1278, OUTPUT);
+  
+  pinMode(redPin1282, OUTPUT);
+  pinMode(greenPin1282, OUTPUT);
+  pinMode(bluePin1282, OUTPUT);
+  
+  pinMode(blueLED, OUTPUT);
+  
+  pinMode(redLED, OUTPUT);
+}
+ 
+void loop(void) {
+  fsrReading1278 = analogRead(fsrAnalogPin1278);
+  Serial.print("Analog reading 1278 = ");
+  Serial.println(fsrReading1278);
+  
+  fsrReading1282 = analogRead(fsrAnalogPin1282);
+  Serial.print("Analog reading 1282 = ");
+  Serial.println(fsrReading1282);
+  
+  if (fsrReading1278 <= 600){
+    Serial.println("1278 Green!");
+    setColor1(0, 255, 0);  // green
+  }
+  
+  if (fsrReading1278 > 600 && fsrReading1278 <= 900){
+    Serial.println("1278 Blue!");
+    setColor1(0, 0, 255);  // blue
+  }
+  
+  if (fsrReading1278 > 900){
+    Serial.println("1278 Red!");
+    setColor1(255, 0, 0);  // red
+  }
+  
+  if (fsrReading1282 <= 600){
+    Serial.println("1282 Green!");
+    setColor2(0, 255, 0);  // green
+  }
+  
+  if (fsrReading1282 > 600 && fsrReading1282 <= 900){
+    Serial.println("1282 Blue!");
+    setColor2(0, 0, 255);  // blue
+  }
+  
+  if (fsrReading1282 > 900){
+    Serial.println("1282 Red!");
+    setColor2(255, 0, 0);  // red
+  }
+  
+  digitalWrite(blueLED, HIGH);
+  digitalWrite(redLED, HIGH); 
+  delay(100);
+}
+
+// set color for RGB LED 1278
+void setColor1(int red1, int green1, int blue1)
+{
+  analogWrite(redPin1278, 255-red1); // 255- because using common Anode
+  analogWrite(greenPin1278, 255-green1);
+  analogWrite(bluePin1278, 255-blue1);  
+}
+
+// set color for RGB LED 1282
+void setColor2(int red2, int green2, int blue2)
+{
+  analogWrite(redPin1282, 255-red2); // 255- because using common Anode
+  analogWrite(greenPin1282, 255-green2);
+  analogWrite(bluePin1282, 255-blue2);  
+}
